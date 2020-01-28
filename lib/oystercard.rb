@@ -21,6 +21,7 @@ class Oystercard
   end
 
   def touch_in
+    fail "Balance too low" if @balance < 1
     @status = true
   end
 

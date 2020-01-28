@@ -36,6 +36,10 @@ describe Oystercard do
     it 'should change status to true' do
       expect{ subject.touch_in }.to change{ subject.status }.to true
     end
+
+    it 'Should raise an error is below the minimnum balance' do
+      expect{ subject.touch_in }.to raise_error "Balance too low"
+    end
   end
 
   describe '#touch_out' do
@@ -44,4 +48,5 @@ describe Oystercard do
       expect(subject.status).to eq false
     end
   end
+
 end
