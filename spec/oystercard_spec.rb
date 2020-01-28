@@ -1,5 +1,6 @@
 require 'oystercard'
 describe Oystercard do
+  let(:station) { double :station }
   it "new card should have a balance of zero" do
     expect(subject.balance).to eq 10
   end
@@ -20,20 +21,26 @@ describe Oystercard do
     end
   end
 
-  describe '#in_journey?' do
+  describe '#status' do
     it 'should return true or false' do
-      expect(subject.in_journey?).to eq false
+      expect(subject.status).to eq false
     end
   end
 
-  describe '#touch_in' do
+  describe '#touch_in("")' do
     it 'should change status to true' do
-      expect{ subject.touch_in }.to change{ subject.status }.to true
+      expect{ subject.touch_in(station) }.to change{ subject.status }.to true
     end
 
     it 'Should raise an error is below the minimnum balance' do
       oystercard = Oystercard.new(0)
-      expect{ oystercard.touch_in }.to raise_error "Balance too low"
+      expect{ oystercard.touch_in(station) }.to raise_error "Balance too low"
+    end
+
+    it 'should return the entry station' do
+      oystercard = Oystercard.new(10)
+      oystercard.touch_in(station)
+      expect(oystercard.entry_station).to eq station
     end
   end
 
