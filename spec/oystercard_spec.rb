@@ -38,7 +38,8 @@ describe Oystercard do
     end
 
     it 'Should raise an error is below the minimnum balance' do
-      expect{ subject.touch_in }.to raise_error "Balance too low"
+      oystercard = Oystercard.new(0)
+      expect{ oystercard.touch_in }.to raise_error "Balance too low"
     end
   end
 

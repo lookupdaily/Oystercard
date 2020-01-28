@@ -2,8 +2,8 @@ class Oystercard
   attr_reader :balance, :status
   Limit = 90
   Minimum_fare = 1
-  def initialize
-    @balance = 10
+  def initialize(balance = 10)
+    @balance = balance
     @status = false
   end
 
@@ -21,7 +21,7 @@ class Oystercard
   end
 
   def touch_in
-    fail "Balance too low" if @balance < 1
+    fail "Balance too low" if @balance < Minimum_fare
     @status = true
   end
 
