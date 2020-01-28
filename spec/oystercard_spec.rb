@@ -46,13 +46,26 @@ describe Oystercard do
 
   describe '#touch_out' do
     it 'should change status to false' do
-      subject.touch_out
+      subject.touch_out(station)
       expect(subject.status).to eq false
     end
 
     it 'should deduct the Minimum_fare from balance' do
-      expect{subject.touch_out }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
+      expect{subject.touch_out(station) }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
     end
+  end
+  describe '#journey_history' do
+    it 'should show us journey history' do
+      expect(subject.journey_history).to eq ({})
+    end
+
+    it 'should change the count by 1 at touch_out' do
+      oystercard = Oystercard.new(10)
+      oystercard.touch_in(station)
+      expect{ oystercard.touch_out(station) }.to change{ oystercard.journey_history.keys.count }.by 1
+    end
+
+
   end
 
 end
