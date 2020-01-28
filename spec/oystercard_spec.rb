@@ -20,12 +20,6 @@ describe Oystercard do
     end
   end
 
-  describe '#deduct' do
-    it 'should deduct the fair amount from the balance' do
-      expect{subject.deduct Oystercard::Minimum_fare }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
-    end
-  end
-
   describe '#in_journey?' do
     it 'should return true or false' do
       expect(subject.in_journey?).to eq false
@@ -47,6 +41,10 @@ describe Oystercard do
     it 'should change status to false' do
       subject.touch_out
       expect(subject.status).to eq false
+    end
+
+    it 'should deduct the Minimum_fare from balance' do
+      expect{subject.touch_out }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
     end
   end
 
