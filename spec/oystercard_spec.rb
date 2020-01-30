@@ -1,6 +1,7 @@
 require 'oystercard'
 describe Oystercard do
-  let(:station) { double :station }
+  let(:entry_station) { double :station }
+  let(:exit_station) { double :station }
   it "new card should have a balance of zero" do
     expect(subject.balance).to eq 10
   end
@@ -21,50 +22,47 @@ describe Oystercard do
     end
   end
 
-  describe '#status' do
-    it 'should return true or false' do
-      expect(subject.status).to eq false
-    end
-  end
-
   describe '#touch_in("")' do
     it 'should change status to true' do
-      expect{ subject.touch_in(station) }.to change{ subject.status }.to true
+      expect{ subject.touch_in(entry_station) }.to change{ subject.in_journey? }.to true
     end
 
     it 'Should raise an error is below the minimnum balance' do
       oystercard = Oystercard.new(0)
-      expect{ oystercard.touch_in(station) }.to raise_error "Balance too low"
+      expect{ oystercard.touch_in(entry_station) }.to raise_error "Balance too low"
     end
 
     it 'should return the entry station' do
-      oystercard = Oystercard.new(10)
-      oystercard.touch_in(station)
-      expect(oystercard.entry_station).to eq station
+      subject.touch_in(entry_station)
+      expect(subject.entry_station).to eq entry_station
     end
   end
 
   describe '#touch_out' do
-    it 'should change status to false' do
-      subject.touch_out(station)
-      expect(subject.status).to eq false
+    it 'should make in_journey to return false' do
+      subject.touch_out(exit_station)
+      expect(subject.in_journey?).to eq false
     end
 
     it 'should deduct the Minimum_fare from balance' do
-      expect{subject.touch_out(station) }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
+      expect{subject.touch_out(exit_station) }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
     end
   end
   describe '#journey_history' do
-    it 'should show us journey history' do
-      expect(subject.journey_history).to eq ({})
+    it 'Return an empty list for history_journey' do
+      expect(subject.journey_history).to eq ([])
     end
 
     it 'should change the count by 1 at touch_out' do
-      oystercard = Oystercard.new(10)
-      oystercard.touch_in(station)
-      expect{ oystercard.touch_out(station) }.to change{ oystercard.journey_history.keys.count }.by 1
+      subject.touch_in(entry_station)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.journey_history.count }.by 1
     end
 
+    it 'should include entry and exit stations' do
+      subject.touch_in(entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey_history).to include(:entry_station => entry_station, :exit_station => exit_station)
+    end
 
   end
 

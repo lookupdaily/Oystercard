@@ -1,12 +1,12 @@
 class Oystercard
-  attr_reader :balance, :status, :entry_station, :journey_history
+  attr_reader :balance, :entry_station, :journey_history, :exit_station
   Limit = 90
   Minimum_fare = 1
   def initialize(balance = 10)
     @balance = balance
     @status = false
     @entry_station = nil
-    @journey_history = {}
+    @journey_history = []
   end
 
   def top_up(value)
@@ -16,16 +16,22 @@ class Oystercard
 
   def touch_in(station)
     fail "Balance too low" if @balance < Minimum_fare
-    @status = true
+    #@status = true
     @entry_station = station
 
   end
 
+  def in_journey?
+    !!@entry_station
+  end
+
   def touch_out(station)
-    @journey_history[:@entry_station] = station #problem with pushing name of entry station into hash
+    @exit_station = station
+    @journey_history.push({:entry_station => entry_station, :exit_station => exit_station}) #problem with pushing name of entry station into hash
     deduct(Minimum_fare)
     @entry_station = nil
-    @status = false
+    puts station
+    #@status = false
   end
 
   private
