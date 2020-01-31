@@ -1,13 +1,14 @@
 require_relative 'journey'
 
 class Oystercard
-  attr_reader :balance, :entry_station, :journey_history, :exit_station
+  attr_reader :balance, :journey_history, :exit_station
   Limit = 90
   Minimum_fare = 1
-  def initialize(balance = 10)
+  def initialize(balance = 10, journey_class = Journey)
     @balance = balance
     @status = false
-    @entry_station = nil
+    @journey_class = journey_class
+    # @entry_station = nil
     @journey_history = []
   end
 
@@ -19,12 +20,12 @@ class Oystercard
   def touch_in(station)
     fail "Balance too low" if @balance < Minimum_fare
     
-    @journey_history << Journey.new(entry_station: station)
+    @journey_history << @journey_class.new(entry_station: station)
   end
 
-  def in_journey?
-    !!@entry_station
-  end
+  # def in_journey?
+  #   !@entry_station.nil?
+  # end
 
   def touch_out(station)
     # @exit_station = station
