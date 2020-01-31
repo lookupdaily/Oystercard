@@ -1,3 +1,5 @@
+require_relative 'journey'
+
 class Oystercard
   attr_reader :balance, :entry_station, :journey_history, :exit_station
   Limit = 90
@@ -16,9 +18,8 @@ class Oystercard
 
   def touch_in(station)
     fail "Balance too low" if @balance < Minimum_fare
-    #@status = true
-    @entry_station = station
-
+    
+    @journey_history << Journey.new(entry_station: station)
   end
 
   def in_journey?
@@ -26,12 +27,14 @@ class Oystercard
   end
 
   def touch_out(station)
-    @exit_station = station
-    @journey_history.push({:entry_station => entry_station, :exit_station => exit_station}) #problem with pushing name of entry station into hash
+    # @exit_station = station
+    # @journey_history.push({:entry_station => entry_station, :exit_station => exit_station})
+    # @journey_history.push(Journey.new(entry_station: @entry_station, exit_station: @exit_station)) #problem with pushing name of entry station into hash
+    @journey_history[-1].exit_station = station
     deduct(Minimum_fare)
-    @entry_station = nil
-    puts station
-    #@status = false
+    # @entry_station = nil
+  
+
   end
 
   private
