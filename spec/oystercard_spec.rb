@@ -34,17 +34,9 @@ describe Oystercard do
       expect{ oystercard.touch_in(entry_station) }.to raise_error "Balance too low"
     end
 
-    # it 'should return the entry station' do
-    #   subject.touch_in(entry_station)
-    #   expect(subject.entry_station).to eq entry_station
-    # end
   end
 
   describe '#touch_out' do
-    # it 'should make in_journey to return false' do
-    #   subject.touch_out(exit_station)
-    #   expect(subject.in_journey?).to eq false
-    # end
 
     it 'should deduct the Minimum_fare from balance' do
       subject.touch_in(entry_station)
@@ -56,16 +48,12 @@ describe Oystercard do
       expect(subject.journey_history).to eq ([])
     end
 
-    it 'should change the count by 1 at touch_out' do
-      subject.touch_in(entry_station)
-      expect{ subject.touch_out(exit_station) }.to change{ subject.journey_history.count }.by 1
-    end
-
     it 'should include entry and exit stations' do
       card = Oystercard.new(10, journey_class_double)
+      allow(journey).to receive(:exit_station=).and_return(exit_station)
       card.touch_in(entry_station)
       card.touch_out(exit_station)
-      expect(card.journey_history).to include(journey_class_double)
+      expect(card.journey_history).to include(journey)
     end
 
   end
