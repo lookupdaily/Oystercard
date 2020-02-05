@@ -54,7 +54,7 @@ $ rspec
 
 ## How I built it ##
 
-This programme was built using Pair Programming and Test Driven Development. I worked with a different pair from my cohort each day to complete the challenge, working on different codebases. Together, we created a programme to meet the requirements of the given [User Stories](#User-stories) below. 
+This programme was built using Pair Programming and Test Driven Development. I worked with a different pair from my cohort each day to complete the challenge, working on different peers' codebases throughout. Together, we created a programme to meet the requirements of the given [User Stories](#User-stories) below. 
 
 ### Concepts applied ###
 
