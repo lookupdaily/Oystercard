@@ -25,9 +25,6 @@ describe Oystercard do
   end
 
   describe '#touch_in("")' do
-    # it 'should change status to true' do
-    #   expect{ subject.touch_in(entry_station) }.to change{ subject.in_journey? }.to true
-    # end
 
     it 'Should raise an error is below the minimnum balance' do
       oystercard = Oystercard.new(0)
