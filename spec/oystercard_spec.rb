@@ -4,8 +4,9 @@ describe Oystercard do
   let(:exit_station) { double :station }
   let(:journey) { double :journey, entry_station: entry_station, exit_station: exit_station }
   let(:journey_class_double) { double :journey_class, new: journey}
+  
   it "new card should have a balance of zero" do
-    expect(subject.balance).to eq 10
+    expect(subject.balance).to eq 0
   end
 
   it { is_expected.to respond_to(:balance) }
@@ -18,8 +19,8 @@ describe Oystercard do
     end
 
     it 'raises an error when the limit is exceeded' do
-      maximum_balance = Oystercard::Limit
-      subject.top_up(80)
+      maximum_balance = Oystercard::LIMIT
+      subject.top_up(90)
       expect{subject.top_up 1 }.to raise_error 'Top up limit exceeded'
     end
   end
@@ -36,8 +37,9 @@ describe Oystercard do
   describe '#touch_out' do
 
     it 'should deduct the Minimum_fare from balance' do
+      subject.top_up(10)
       subject.touch_in(entry_station)
-      expect{subject.touch_out(exit_station) }.to change{ subject.balance }.by -(Oystercard::Minimum_fare)
+      expect{subject.touch_out(exit_station) }.to change{ subject.balance }.by -(Oystercard::MINIMUM_FARE)
     end
   end
   describe '#journey_history' do
